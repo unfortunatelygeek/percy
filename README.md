@@ -150,3 +150,5 @@ Also, engaging with both internal stakeholders during the alpha phase and extern
 - AI, cybersecurity, and DevOps domain experts
 - Open-source community contributions
 - Enterprise-scale deployment partnerships
+
+A gentle note. The commit history shows two contributors, `unfortunatelygeek` and `dandanheads-Datahack`. I request the reviewers to please note that both users are me, Aditi Rao, only.
