@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "prowler"
+version = "0.1.0"
+description = "Prowler's purpose is to automate testing with a three-pronged approach - 1. Prioritize tests based on context relevance (more important that others) and changelog, 2. Conduct Vulnerability prompting using Ollama to catch potential vulnerabilities, 3. Generate Unit Tests based on the vulnerability check"
+authors = ["unfortunatelygeek"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

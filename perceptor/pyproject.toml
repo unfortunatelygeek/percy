@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "perceptor"
+version = "0.1.0"
+description = "Perceptor exists to automate CI/CD pipelines using AI. Perceptor 1. Documents changes in the code and updates README.md and CHANGELOG.md, 2. optimizes costs"
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
