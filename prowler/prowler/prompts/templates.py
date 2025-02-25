@@ -11,7 +11,7 @@ to developers. Maintain a structured and concise response format.
 
 INITIAL_ANALYSIS_PROMPT = """\
 Analyze the provided Python file for security vulnerabilities. Identify potential security risks, \
-such as SQL Injection, XSS, SSRF, RCE, and other common attack vectors. If vulnerabilities exist, \
+such as SQL Injection, XSS, SSRF, RCE, AFO, LFI, IDOR. If vulnerabilities exist, \
 explain why they are dangerous and how an attacker might exploit them.
 """
 
