@@ -1,0 +1,24 @@
+[project]
+name = "marksman"
+version = "0.1.0"
+description = "marksman exists to reduce latency in cloud applications using markov models"
+authors = [
+    {name = "unfortunatelygeek",email = "aditiiirao15@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "scikit-learn (>=1.6.1,<2.0.0)",
+    "numpy (>=2.2.3,<3.0.0)",
+    "pandas (>=2.2.3,<3.0.0)",
+    "logging (>=0.4.9.6,<0.5.0.0)",
+    "typing (<3.10)",
+    "prometheus-client (>=0.21.1,<0.22.0)",
+    "grafana-client (>=4.3.1,<5.0.0)",
+    "pytest (>=8.3.4,<9.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
