@@ -1,0 +1,9 @@
+before_script:
+  - pip install scikit-learn pandas numpy gitpython requests
+  - git clone https://github.com/your-username/perceptor.git
+  - cd perceptor
+  - python predict_tests.py
+  - cd ..
+
+script:
+  - python -m pytest $(cat perceptor/data/test_config.json | jq -r '.tests_to_run[]')

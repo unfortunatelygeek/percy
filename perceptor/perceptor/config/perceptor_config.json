@@ -1,0 +1,16 @@
+{
+    "travis_ci": {
+        "api_token": "YOUR_TRAVIS_CI_API_TOKEN",
+        "repo_slug": "your-username/your-repo"
+    },
+    "model": {
+        "feature_count": 20,
+        "test_prediction_threshold": 0.3
+    },
+    "paths": {
+        "repo_path": "/path/to/your/repository",
+        "model_path": "models/perceptor_svm.joblib",
+        "dataset_path": "data/training_data.csv",
+        "output_config": "data/test_config.json"
+    }
+}

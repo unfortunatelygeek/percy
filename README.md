@@ -2,11 +2,48 @@
 
 Percy is a four-pronged AI-driven solution optimizing CI/CD pipelines, automating testing and enhancing developer experience. It integrates multiple AI models to provide an end-to-end, efficient, and secure development environment.
 
+## High-Level Design of Percy
+
+```mermaid
+graph TD;
+    subgraph Pax: Developer Hub
+        A1[Live Coding in OnixIDE] -->|Sync & AI Help| A2[AI Suggests Code]
+        A2 -->|Turn Text into Code| A3[Set Up Workspaces]
+        A3 -->|Create & Configure Environments| B[Coder: Cloud Workspaces]
+        
+        B -->|Load Files Faster| C[Marksman: Smart Caching]
+        B -->|Run Only Needed Tests| D[Perceptor: Picks Tests]
+        B -->|Find Security Issues| E[Prowler: Checks Code]
+        
+        C -->|Preload Common Files| B
+        D -->|Skip Unnecessary Tests for development purposes| B
+        E -->|Spot Code Mistakes| B
+    end
+
+    Developer -->|Writes Code| A1
+    Developer -->|Runs Tests With the help of| D
+    Developer -->|Checks for Bugs with the help of| E
+```
+
 ## Components
 
 ### 1. Prowler: AI for Testing
 
 Prowler enhances software testing through prioritization and vulnerability detection.
+
+```mermaid
+graph TD;
+    subgraph Prowler: AI Security Scanner
+        A1[Script] -->|Parse File Structure| D[Tree-Sitter AST]
+        D -->|Extract Functions & Classes in the Changes made| A2[Structured, but restricted amount of Code that could potentiall have vulnerabilities]
+        A2 -->|Send to LLMs for Review| B[Claude, Gemini, Codey]
+        B -->|Flag Risky Code| C[Report Issues]
+    end
+
+    Input["GitHub Repos, Semgrep Rules, OWASP Dataset, NVD Vulnerability Database"] --> A1
+    C -->|Sends Fix Suggestions| Output["Developers Get Security Warnings"]
+
+```
 
 **Features:**
 - Test Prioritization:
@@ -30,6 +67,24 @@ Marksman reduces latency for cloud-based development environments.
 - Latency Reduction: Predictive caching and state-based optimizations using Markov Models
 - Expected latency reduction: 40-60%
 
+```mermaid
+graph TD;
+    subgraph Marksman: Faster Access & Less Waste
+        A1[Script] -->|Tracks Used Files| A2[Markov Model Predicts Needs]
+        A2 -->|Groups Similar Usage| A3[K-Means Clustering]
+        A3 -->|Decide What to Preload| B[Hybrid LRU-LFU Cache]
+        B -->|Keep Important, Remove Old| C[Smart Cache Storage]
+        
+        A1 -->|Detect Odd Usage| D[Anomaly Detection]
+        D -->|Find Spikes or Drops| E[Z-Score & Time Decay]
+        E -->|Alerts & Adjustments| F[Resource Manager]
+    end
+
+    Input["Travis CI Logs, Google , Prometheus Metrics, Bazel Build Cache"] --> A1
+    F -->|Better Predictions| B
+
+```
+
 **Research Citations:**
 - "An Improved Cache Eviction Strategy: Combining Least Recently Used and Least Frequently Used Policies (IEEE Xplore" [[See](https://ieeexplore.ieee.org/document/10454976)]
 
@@ -37,13 +92,25 @@ Marksman reduces latency for cloud-based development environments.
 
 Perceptor optimizes CI/CD through version tracking and test prediction.
 
+```mermaid
+graph TD;
+    subgraph Perceptor: Faster Testing
+        A1[Code Changes] -->|Compare with Past Edits| A2[Feature Engineering]
+        A2 -->|Find Patterns in Test Failures| B[SVM Classifier]
+        B -->|Predict Which Tests Matter| C[Run Only Selected Tests]
+    end
+
+    Input["Travis CI Logs, GitHub Actions, JUnit Reports, SonarQube Data"] --> A1
+    C -->|Skips Unneeded Tests| Output["Faster CI/CD"]
+```
+
 **Features:**
 - Code Tracking & AI Analysis:
   - Git-based version history tracking
   - Secure code change extraction via locally hosted Ollama model
 - Intelligent Test Execution Prediction:
   - Extracts CI/CD workflows from .github/workflows
-  - SVM model predicts necessary test cases (85% accuracy)
+  - SVM model predicts necessary test cases
 
 **Future Scope:**
 - Cost optimization via dynamic resource allocation (estimated 30-40% savings)
@@ -51,6 +118,25 @@ Perceptor optimizes CI/CD through version tracking and test prediction.
 ### 4. Pax: AI-Enhanced Developer Experience
 
 Pax enhances development workflow through collaborative editing and ready-to-use workspaces.
+
+```mermaid
+graph TD;
+    subgraph Pax: All-in-One Dev System
+        A1[OnixIDE: Live Coding] -->|Sync in Real-Time| A2[AI Code Suggestions]
+        A2 -->|Turn Text into Code| A3[Set Up Workspaces]
+        A3 -->|Create Dev Containers| B[Coder: Cloud Workspaces]
+        
+        B -->|Load Faster| C[Marksman: Smart Caching since this is cloud-based]
+        B -->|Run Only Needed Tests| D[Perceptor: Picks Tests]
+        B -->|Check Security Issues| E[Prowler: Finds Vulnerabilities]
+    end
+
+    Input["Coder Workspace Configs, GitHub Repos, Stack Overflow API, LLMs"] --> A1
+    C -->|Preload Common Files| B
+    D -->|Skip Unnecessary Tests| B
+    E -->|Spot Code Issues| B
+
+```
 
 **Features:**
 - Collaborative Editing: OnixIDE-based editing with real-time collaboration via websockets
@@ -60,6 +146,87 @@ Pax enhances development workflow through collaborative editing and ready-to-use
 **Future Scope:**
 - Automated Workspace Generation: LLM-based .yml configuration generation for coder workspaces
 - Integration with Go Backend of Coder for seamless processing (currently a temporary setup of .yml)
+
+## More Detailed Workflow Overview
+
+```mermaid
+graph TD;
+  subgraph "Developer Interaction Data Sources"
+    A1[IDE Telemetry]
+    A2[GitHub API Commit Logs]
+    A3[TravisCI Build History API]
+    A4[Docker Stats API]
+    A5[Wireshark Network Capture]
+    A6[Maven/Gradle Build Logs]
+  end
+
+  subgraph "Marksman: Cloud Latency Optimization"
+    M1[Hybrid LRU-LFU Caching System]
+    M2[Markov Model for State Prediction]
+    M3[Resource Usage Anomaly Detection]
+    M4[Predictive Prefetching]
+    M5[Prometheus & Grafana Monitoring]
+  end
+
+  subgraph "Pax: AI-Enhanced Developer Experience"
+    P1[OnixIDE Collaborative Editing]
+    P2[Portable Workspaces via Coder]
+    P3[CI/CD Pipeline Integration]
+    P4[LLM-Generated Workspace Configs]
+    P5[Pre-configured Development Environments]
+  end
+
+  subgraph "Perceptor: AI-Driven CI/CD Optimization"
+    C1[Git-based Version History Tracking]
+    C2[Ollama for Local Code Analysis]
+    C3[GitHub Workflow Extraction]
+    C4[SVM for Test Prediction]
+    C5[Dynamic Resource Allocation]
+  end
+
+  subgraph "Prowler: AI for Testing & Security"
+    V1[Test Prioritization Engine]
+    V2[Vulnerability Detection Scanner]
+    V3[Tree-Sitter Parsing for Multilingual Support]
+    V4[Security Test Generation]
+    V5[LFI/XSS/RCE/AFO/SSRF Detection]
+  end
+
+  A1 -->|IDE Usage Patterns| M2
+  A2 -->|Code Change Analysis| C1
+  A3 -->|Pipeline Performance| C3
+  A4 -->|Resource Metrics| M3
+  A5 -->|Network Optimization| M4
+  A6 -->|Build Dependencies| P2
+
+  M2 -->|State Transition Predictions| M1
+  M3 -->|Resource Anomalies| M5
+  M4 -->|Cache Prefetching| M1
+  M1 -->|Latency Reduction 40-60%| P5
+
+  P1 -->|Real-time Collaboration| P2
+  P2 -->|Pre-configured Workspaces| P3
+  P3 -->|Streamlined CI/CD| P4
+  P4 -->|.yml Generation| P5
+  P5 -->|Setup Time Reduction 75%| C5
+
+  C1 -->|Code Changes| C2
+  C2 -->|Secure Analysis| C3
+  C3 -->|Workflow Extraction| C4
+  C4 -->|Test Prediction 85% Accuracy| C5
+  C5 -->|Cost Optimization 30-40%| M5
+
+  V1 -->|Critical Test Identification| C4
+  V2 -->|Code Parsing| V3
+  V3 -->|Error prone Code change passed to LLM| V4
+  V4 -->|Security Issue Detection 76%| V5
+  V5 -->|Unit Tests Generated for this Case| P3
+
+  M1 -->|Optimized Caching| P5
+  C4 -->|Pipeline Speedup 35-50%| P3
+  V1 -->|Test Time Reduction 65%| C4
+  P2 -->|Integration with Coder| M4
+```
 
 ## Integration of Percy Components with Coder
 

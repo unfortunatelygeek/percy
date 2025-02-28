@@ -1,16 +1,16 @@
 import pytest
 from unittest.mock import MagicMock
-from .marksman import MarksmanSystem, AdvancedCache
+from .marksman import MarksmanSystem, Cache
 import prometheus_client
 import time
 
 def test_cache_put_get():
-    cache = AdvancedCache(max_size_mb=100)
+    cache = Cache(max_size_mb=100)
     cache.put("test_key", "test_data", 10)
     assert cache.get("test_key") == "test_data"
 
 def test_cache_eviction():
-    cache = AdvancedCache(max_size_mb=100)
+    cache = Cache(max_size_mb=100)
     cache.put("key1", "data1", 60)
     cache.put("key2", "data2", 50)  # Should trigger eviction
     assert cache.get("key1") is None  # Should be evicted

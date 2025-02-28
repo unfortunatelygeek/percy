@@ -21,33 +21,153 @@ REGISTRY = prom.CollectorRegistry(auto_describe=True)
 # See the paper: An Improved Cache Eviction Strategy: Combining Least Recently Used and Least Frequently Used
 # Citation: An improved cache eviction strategy: combining least recently used and least frequently used policies.
 # IEEE Conference Publication | IEEE Xplore. https://ieeexplore.ieee.org/document/10454976
+# class Cache:
+#     def __init__(self, max_size_mb: int = 1000, decay_factor: float = 0.9):
+#         """
+#         args:
+#             max_size_mb: Maximum cache size in MB
+#             decay_factor: Factor to decay frequency scores over time (0-1)
+#         """
+#         self.max_size_mb = max_size_mb
+#         self.current_size = 0
+#         self.data = {}  # resource_id -> (data, size_mb)
+#         self.freq = defaultdict(int)  # Access frequency counter
+#         self.access_time = {}  # Last access timestamp
+#         self.decay_factor = decay_factor
+#         self.metrics = {
+#             'hits': 0,
+#             'misses': 0,
+#             'evictions': 0,
+#         }
+    
+#     def get(self, key: str) -> Optional[Any]:
+#         """
+#         Get item from cache and update its frequency and timestamp.        
+#         args:
+#             key: Cache key to retrieve            
+#         Returns:
+#             Cached data or none if not found!
+#         """
+#         if key in self.data:
+#             data, _ = self.data[key]
+#             self.freq[key] += 1
+#             self.access_time[key] = time.time()
+#             self.metrics['hits'] += 1
+#             return data
+        
+#         self.metrics['misses'] += 1
+#         return None
+    
+#     def put(self, key: str, data: Any, size_mb: float) -> bool:
+#         """
+#         Add item to cache with specified size.        
+#         args:
+#             key: Cache key
+#             data: Data to store
+#             size_mb: Size of data in MB
+#         Returns:
+#             Boolean indicating if caching was successful
+#         """
+#         #if already cached, just update
+#         if key in self.data:
+#             _, old_size = self.data[key]
+#             self.data[key] = (data, size_mb)
+#             self.current_size = self.current_size - old_size + size_mb
+#             self.freq[key] += 1
+#             self.access_time[key] = time.time()
+#             return True
+        
+#         #agar adding would exceed cache size, evict items
+#         if self.current_size + size_mb > self.max_size_mb:
+#             self._evict_until_fits(size_mb)
+        
+#         #if still too large after eviction, can't cache
+#         if self.current_size + size_mb > self.max_size_mb:
+#             return False
+        
+#         #add to cache
+#         self.data[key] = (data, size_mb)
+#         self.freq[key] = 1
+#         self.access_time[key] = time.time()
+#         self.current_size += size_mb
+#         return True
+    
+#     def _evict_until_fits(self, required_space: float) -> None:
+#         """
+#         Evict items until required space is available. Uses hybrid LRU-LFU with time decay for eviction decisions.
+        
+#         args:
+#             required_space: Space needed in MB
+#         """
+#         if not self.data:
+#             return
+        
+#         now = time.time()
+#         items_to_evict = []
+        
+#         #Calculate scores for all items (combining frequency and recency)
+#         scores = {}
+#         for key in self.data:
+#             # Time factor (higher score for more recent access!)
+#             time_factor = now - self.access_time[key]
+#             # Apply decay to frequency based on time (older accesses count less)
+#             decayed_freq = self.freq[key] * (self.decay_factor ** time_factor)
+#             # Final score (normalize by size for efficiency)
+#             _, size = self.data[key]
+#             scores[key] = decayed_freq / (size * (1 + time_factor))
+        
+#         # Sort by score (lowest first ---> these will be evicted)
+#         sorted_items = sorted(scores.items(), key=lambda x: x[1])
+        
+#         # Evict until we have enough space
+#         space_freed = 0
+#         for key, _ in sorted_items:
+#             if space_freed >= required_space:
+#                 break
+            
+#             _, size = self.data[key]
+#             del self.data[key]
+#             del self.freq[key]
+#             del self.access_time[key]
+            
+#             space_freed += size
+#             self.current_size -= size
+#             self.metrics['evictions'] += 1
+    
+#     def clear(self) -> None:
+#         """Clear the cache completely."""
+#         self.data = {}
+#         self.freq = defaultdict(int)
+#         self.access_time = {}
+#         self.current_size = 0
+    
+#     def get_metrics(self) -> Dict:
+#         """Get cache performance metrics."""
+#         total_requests = self.metrics['hits'] + self.metrics['misses']
+#         hit_ratio = self.metrics['hits'] / total_requests if total_requests > 0 else 0
+        
+#         return {
+#             'size_mb': self.current_size,
+#             'max_size_mb': self.max_size_mb,
+#             'usage_percent': (self.current_size / self.max_size_mb) * 100 if self.max_size_mb > 0 else 0,
+#             'items': len(self.data),
+#             'hits': self.metrics['hits'],
+#             'misses': self.metrics['misses'],
+#             'evictions': self.metrics['evictions'],
+#             'hit_ratio': hit_ratio
+#         }
+
 class Cache:
-    def __init__(self, max_size_mb: int = 1000, decay_factor: float = 0.9):
-        """
-        args:
-            max_size_mb: Maximum cache size in MB
-            decay_factor: Factor to decay frequency scores over time (0-1)
-        """
+    def __init__(self, max_size_mb=1000, decay_factor=0.9):
         self.max_size_mb = max_size_mb
         self.current_size = 0
-        self.data = {}  # resource_id -> (data, size_mb)
-        self.freq = defaultdict(int)  # Access frequency counter
-        self.access_time = {}  # Last access timestamp
+        self.data = {}
+        self.freq = defaultdict(int)
+        self.access_time = {}
         self.decay_factor = decay_factor
-        self.metrics = {
-            'hits': 0,
-            'misses': 0,
-            'evictions': 0,
-        }
+        self.metrics = {'hits': 0, 'misses': 0, 'evictions': 0}
     
-    def get(self, key: str) -> Optional[Any]:
-        """
-        Get item from cache and update its frequency and timestamp.        
-        args:
-            key: Cache key to retrieve            
-        Returns:
-            Cached data or none if not found!
-        """
+    def get(self, key):
         if key in self.data:
             data, _ = self.data[key]
             self.freq[key] += 1
@@ -58,17 +178,7 @@ class Cache:
         self.metrics['misses'] += 1
         return None
     
-    def put(self, key: str, data: Any, size_mb: float) -> bool:
-        """
-        Add item to cache with specified size.        
-        args:
-            key: Cache key
-            data: Data to store
-            size_mb: Size of data in MB
-        Returns:
-            Boolean indicating if caching was successful
-        """
-        #if already cached, just update
+    def put(self, key, data, size_mb):
         if key in self.data:
             _, old_size = self.data[key]
             self.data[key] = (data, size_mb)
@@ -77,79 +187,49 @@ class Cache:
             self.access_time[key] = time.time()
             return True
         
-        #agar adding would exceed cache size, evict items
         if self.current_size + size_mb > self.max_size_mb:
             self._evict_until_fits(size_mb)
         
-        #if still too large after eviction, can't cache
         if self.current_size + size_mb > self.max_size_mb:
             return False
         
-        #add to cache
         self.data[key] = (data, size_mb)
         self.freq[key] = 1
         self.access_time[key] = time.time()
         self.current_size += size_mb
         return True
     
-    def _evict_until_fits(self, required_space: float) -> None:
-        """
-        Evict items until required space is available. Uses hybrid LRU-LFU with time decay for eviction decisions.
-        
-        args:
-            required_space: Space needed in MB
-        """
+    def _evict_until_fits(self, required_space):
         if not self.data:
             return
         
         now = time.time()
-        items_to_evict = []
+        scores = {
+            key: self.freq[key] / (self.data[key][1] * (1 + (now - self.access_time[key])))
+            for key in self.data
+        }
         
-        #Calculate scores for all items (combining frequency and recency)
-        scores = {}
-        for key in self.data:
-            # Time factor (higher score for more recent access!)
-            time_factor = now - self.access_time[key]
-            # Apply decay to frequency based on time (older accesses count less)
-            decayed_freq = self.freq[key] * (self.decay_factor ** time_factor)
-            # Final score (normalize by size for efficiency)
-            _, size = self.data[key]
-            scores[key] = decayed_freq / (size * (1 + time_factor))
-        
-        # Sort by score (lowest first ---> these will be evicted)
         sorted_items = sorted(scores.items(), key=lambda x: x[1])
         
-        # Evict until we have enough space
         space_freed = 0
         for key, _ in sorted_items:
             if space_freed >= required_space:
                 break
             
-            _, size = self.data[key]
-            del self.data[key]
-            del self.freq[key]
-            del self.access_time[key]
-            
+            _, size = self.data.pop(key)
+            self.freq.pop(key)
+            self.access_time.pop(key)
             space_freed += size
             self.current_size -= size
             self.metrics['evictions'] += 1
     
-    def clear(self) -> None:
-        """Clear the cache completely."""
-        self.data = {}
-        self.freq = defaultdict(int)
-        self.access_time = {}
-        self.current_size = 0
-    
-    def get_metrics(self) -> Dict:
-        """Get cache performance metrics."""
+    def get_metrics(self):
         total_requests = self.metrics['hits'] + self.metrics['misses']
         hit_ratio = self.metrics['hits'] / total_requests if total_requests > 0 else 0
-        
         return {
             'size_mb': self.current_size,
             'max_size_mb': self.max_size_mb,
-            'usage_percent': (self.current_size / self.max_size_mb) * 100 if self.max_size_mb > 0 else 0,
+            'usage_percent': (self.current_size / self.max_size_mb) * 100,
             'items': len(self.data),
             'hits': self.metrics['hits'],
             'misses': self.metrics['misses'],
