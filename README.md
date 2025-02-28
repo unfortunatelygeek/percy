@@ -156,16 +156,16 @@ graph TD;
     A2[GitHub API Commit Logs]
     A3[TravisCI Build History API]
     A4[Docker Stats API]
-    A5[Wireshark Network Capture]
+    A5[OpenTelemetry/eBPF Network Tracing]
     A6[Maven/Gradle Build Logs]
   end
 
   subgraph "Marksman: Cloud Latency Optimization"
-    M1[Hybrid LRU-LFU Caching System]
-    M2[Markov Model for State Prediction]
+    M1[Hybrid LRU-LFU Caching for Build Artifacts]
+    M2[Markov Model + LSTM in the future for State Prediction]
     M3[Resource Usage Anomaly Detection]
-    M4[Predictive Prefetching]
-    M5[Prometheus & Grafana Monitoring]
+    M4[Predictive Prefetching for Dependencies]
+    M5[Prometheus & Grafana Monitoring -> Kubernetes HPA]
   end
 
   subgraph "Pax: AI-Enhanced Developer Experience"
@@ -178,10 +178,10 @@ graph TD;
 
   subgraph "Perceptor: AI-Driven CI/CD Optimization"
     C1[Git-based Version History Tracking]
-    C2[Ollama for Local Code Analysis]
+    C2[Code Llama for Local Code Analysis]
     C3[GitHub Workflow Extraction]
-    C4[SVM for Test Prediction]
-    C5[Dynamic Resource Allocation]
+    C4[XGBoost for Test Prediction]
+    C5[Dynamic Resource Allocation Based on Metrics]
   end
 
   subgraph "Prowler: AI for Testing & Security"
@@ -196,13 +196,13 @@ graph TD;
   A2 -->|Code Change Analysis| C1
   A3 -->|Pipeline Performance| C3
   A4 -->|Resource Metrics| M3
-  A5 -->|Network Optimization| M4
+  A5 -->|Network Latency Data| M4
   A6 -->|Build Dependencies| P2
 
   M2 -->|State Transition Predictions| M1
   M3 -->|Resource Anomalies| M5
-  M4 -->|Cache Prefetching| M1
-  M1 -->|Latency Reduction 40-60%| P5
+  M4 -->|Prefetching Dependency Data| M1
+  M1 -->|Reduced CI/CD Latency 40-60%| P5
 
   P1 -->|Real-time Collaboration| P2
   P2 -->|Pre-configured Workspaces| P3
@@ -211,21 +211,23 @@ graph TD;
   P5 -->|Setup Time Reduction 75%| C5
 
   C1 -->|Code Changes| C2
-  C2 -->|Secure Analysis| C3
+  C2 -->|Static & Dynamic Analysis| C3
   C3 -->|Workflow Extraction| C4
-  C4 -->|Test Prediction 85% Accuracy| C5
-  C5 -->|Cost Optimization 30-40%| M5
+  C4 -->|Test Prediction 90% Accuracy| C5
+  C5 -->|Optimized CI/CD Compute Cost 30-40%| M5
 
   V1 -->|Critical Test Identification| C4
   V2 -->|Code Parsing| V3
-  V3 -->|Error prone Code change passed to LLM| V4
-  V4 -->|Security Issue Detection 76%| V5
-  V5 -->|Unit Tests Generated for this Case| P3
+  V3 -->|Error-Prone Code Detection| V4
+  V4 -->|Security Issue Detection 80%| V5
+  V5 -->|Unit Tests Generated| P3
 
-  M1 -->|Optimized Caching| P5
+  M1 -->|Optimized Build Caching| P5
   C4 -->|Pipeline Speedup 35-50%| P3
   V1 -->|Test Time Reduction 65%| C4
   P2 -->|Integration with Coder| M4
+  M5 -->|Auto Scaling Decisions| C5
+
 ```
 
 ## Integration of Percy Components with Coder
