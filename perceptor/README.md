@@ -15,6 +15,19 @@ The primary goal of Perceptor is to predict which test cases are necessary for a
 - **Context-Aware Documentation**: A local LLM analyzes changes and generates meaningful commit summaries, changelogs, and API documentation.
 - **Security-Focused Processing**: By keeping the LLM on-premises, Perceptor ensures that sensitive data is never exposed externally.
 
+```mermaid
+graph TD;
+    subgraph Perceptor: Faster Testing
+        A1[Code Changes] -->|Extract Features from Past Edits| A2[Feature Engineering]
+        A2 -->|Find Patterns in Test Failures| B[XGBoost Classifier]
+        B -->|Predict High-Risk Tests| C[Prioritized Test Execution]
+        C -->|Skip Low-Risk & Unaffected Tests| D[Selective Test Execution]
+    end
+
+    Input["Travis CI Logs, GitHub Actions, JUnit Reports, SonarQube Data"] --> A1
+    D -->|Faster Testing & CI/CD Speedup| Output["CI/CD Runs More Efficiently"]
+```
+
 ## Why Do This?
 Efficiency: By predicting and executing only necessary tests, Perceptor reduces the overall testing time and resource usage, making the CI/CD process more efficient.
 
