@@ -6,8 +6,23 @@ Marksman is an intelligent system designed to optimize resource management for d
 
 By integrating with Prometheus and Grafana, Marksman offers real-time monitoring, performance tracking, and predictive analytics.  
 
-## Project Status  
-**In Progress**  
+## Procedural Functioning: Marksman  
+```mermaid
+graph TD;
+    subgraph Marksman: Faster Access & Less Waste
+        A1[Script] -->|Track Used Files & Access Patterns| A2[Markov Model + LSTM Predict Needs]
+        A2 -->|Group Similar Usage Patterns| A3[K-Means Clustering]
+        A3 -->|Decide What to Preload & Evict| B[Hybrid LRU-LFU Cache]
+        B -->|Keep Critical, Remove Stale| C[Smart Cache Storage]
+        
+        A1 -->|Detect Anomalous Access Patterns| D[Resource Usage Anomaly Detection]
+        D -->|Identify Spikes & Drops| E[Z-Score + Time Decay Analysis]
+        E -->|Trigger Alerts & Auto-Scaling| F[Prometheus + Kubernetes HPA]
+    end
+
+    Input["Travis CI Logs, OpenTelemetry Network Tracing, Prometheus Metrics, Bazel Build Cache"] --> A1
+    F -->|Improve Prefetching Decisions| B
+```
 
 ## Features  
 

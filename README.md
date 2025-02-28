@@ -140,8 +140,6 @@ graph TD;
     C -->|Preload Commonly Used Files| B
     D -->|Avoid Unnecessary Test Runs| B
     E -->|Spot Security Risks in Code| B
-
-
 ```
 
 **Features:**

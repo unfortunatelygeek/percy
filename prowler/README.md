@@ -5,6 +5,25 @@ Prowler is a powerful system designed to analyze source code for vulnerabilities
 
 Zero-day vulnerabilities are previously unknown security flaws that attackers exploit before a fix is available. Traditional tools struggle with these because they rely on known vulnerability databases (e.g., CVE lists).
 
+## Procedural Workflow For Prowler
+
+```mermaid
+graph TD;
+    subgraph Prowler: AI Security Scanner
+        A1[Script] -->|Parse File Structure| D[Tree-Sitter AST]
+        D -->|Extract Changed Functions & Classes| A2[Structured Code Sections]
+        A2 -->|Analyze with Static & Dynamic Tools| B1[Semgrep, OWASP, NVD]
+        A2 -->|Send to LLMs for Review| B2[Claude, Gemini, Codey]
+        B1 -->|Flag Known Vulnerabilities| C1[Security Report]
+        B2 -->|Detect Logic & Semantic Issues| C2[Risk Warnings]
+        C1 & C2 -->|Generate Fix Suggestions| C3[Developer Report]
+    end
+
+    Input["GitHub Repos, Semgrep Rules, OWASP Dataset, NVD Vulnerability Database"] --> A1
+    C3 -->|Developers Receive Warnings & Fixes| Output["Code Security Improved"]
+
+```
+
 ### How Prowler Can Detect Zero-Days
 
 #### Behavioral & Pattern-Based Detection
