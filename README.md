@@ -35,13 +35,16 @@ Prowler enhances software testing through prioritization and vulnerability detec
 graph TD;
     subgraph Prowler: AI Security Scanner
         A1[Script] -->|Parse File Structure| D[Tree-Sitter AST]
-        D -->|Extract Functions & Classes in the Changes made| A2[Structured, but restricted amount of Code that could potentiall have vulnerabilities]
-        A2 -->|Send to LLMs for Review| B[Claude, Gemini, Codey]
-        B -->|Flag Risky Code| C[Report Issues]
+        D -->|Extract Changed Functions & Classes| A2[Structured Code Sections]
+        A2 -->|Analyze with Static & Dynamic Tools| B1[Semgrep, OWASP, NVD]
+        A2 -->|Send to LLMs for Review| B2[Claude, Gemini, Codey]
+        B1 -->|Flag Known Vulnerabilities| C1[Security Report]
+        B2 -->|Detect Logic & Semantic Issues| C2[Risk Warnings]
+        C1 & C2 -->|Generate Fix Suggestions| C3[Developer Report]
     end
 
     Input["GitHub Repos, Semgrep Rules, OWASP Dataset, NVD Vulnerability Database"] --> A1
-    C -->|Sends Fix Suggestions| Output["Developers Get Security Warnings"]
+    C3 -->|Developers Receive Warnings & Fixes| Output["Code Security Improved"]
 
 ```
 
@@ -70,18 +73,19 @@ Marksman reduces latency for cloud-based development environments.
 ```mermaid
 graph TD;
     subgraph Marksman: Faster Access & Less Waste
-        A1[Script] -->|Tracks Used Files| A2[Markov Model Predicts Needs]
-        A2 -->|Groups Similar Usage| A3[K-Means Clustering]
-        A3 -->|Decide What to Preload| B[Hybrid LRU-LFU Cache]
-        B -->|Keep Important, Remove Old| C[Smart Cache Storage]
+        A1[Script] -->|Track Used Files & Access Patterns| A2[Markov Model + LSTM Predict Needs]
+        A2 -->|Group Similar Usage Patterns| A3[K-Means Clustering]
+        A3 -->|Decide What to Preload & Evict| B[Hybrid LRU-LFU Cache]
+        B -->|Keep Critical, Remove Stale| C[Smart Cache Storage]
         
-        A1 -->|Detect Odd Usage| D[Anomaly Detection]
-        D -->|Find Spikes or Drops| E[Z-Score & Time Decay]
-        E -->|Alerts & Adjustments| F[Resource Manager]
+        A1 -->|Detect Anomalous Access Patterns| D[Resource Usage Anomaly Detection]
+        D -->|Identify Spikes & Drops| E[Z-Score + Time Decay Analysis]
+        E -->|Trigger Alerts & Auto-Scaling| F[Prometheus + Kubernetes HPA]
     end
 
-    Input["Travis CI Logs, Google , Prometheus Metrics, Bazel Build Cache"] --> A1
-    F -->|Better Predictions| B
+    Input["Travis CI Logs, OpenTelemetry Network Tracing, Prometheus Metrics, Bazel Build Cache"] --> A1
+    F -->|Improve Prefetching Decisions| B
+
 
 ```
 
@@ -95,13 +99,14 @@ Perceptor optimizes CI/CD through version tracking and test prediction.
 ```mermaid
 graph TD;
     subgraph Perceptor: Faster Testing
-        A1[Code Changes] -->|Compare with Past Edits| A2[Feature Engineering]
-        A2 -->|Find Patterns in Test Failures| B[SVM Classifier]
-        B -->|Predict Which Tests Matter| C[Run Only Selected Tests]
+        A1[Code Changes] -->|Extract Features from Past Edits| A2[Feature Engineering]
+        A2 -->|Find Patterns in Test Failures| B[XGBoost Classifier]
+        B -->|Predict High-Risk Tests| C[Prioritized Test Execution]
+        C -->|Skip Low-Risk & Unaffected Tests| D[Selective Test Execution]
     end
 
     Input["Travis CI Logs, GitHub Actions, JUnit Reports, SonarQube Data"] --> A1
-    C -->|Skips Unneeded Tests| Output["Faster CI/CD"]
+    D -->|Faster Testing & CI/CD Speedup| Output["CI/CD Runs More Efficiently"]
 ```
 
 **Features:**
@@ -122,19 +127,20 @@ Pax enhances development workflow through collaborative editing and ready-to-use
 ```mermaid
 graph TD;
     subgraph Pax: All-in-One Dev System
-        A1[OnixIDE: Live Coding] -->|Sync in Real-Time| A2[AI Code Suggestions]
-        A2 -->|Turn Text into Code| A3[Set Up Workspaces]
-        A3 -->|Create Dev Containers| B[Coder: Cloud Workspaces]
+        A1[OnixIDE: Live Coding] -->|Real-time Collaboration| A2[AI Code Suggestions]
+        A2 -->|Generate Configurations for Environments| A3[LLM-Powered Workspace Setup]
+        A3 -->|Pre-built & Configured Containers| B[Coder: Cloud Workspaces]
         
-        B -->|Load Faster| C[Marksman: Smart Caching since this is cloud-based]
-        B -->|Run Only Needed Tests| D[Perceptor: Picks Tests]
-        B -->|Check Security Issues| E[Prowler: Finds Vulnerabilities]
+        B -->|Load Faster| C[Marksman: Smart Caching]
+        B -->|Run Only Needed Tests| D[Perceptor: Test Prioritization]
+        B -->|Check for Security Issues| E[Prowler: Vulnerability Detection]
     end
 
-    Input["Coder Workspace Configs, GitHub Repos, Stack Overflow API, LLMs"] --> A1
-    C -->|Preload Common Files| B
-    D -->|Skip Unnecessary Tests| B
-    E -->|Spot Code Issues| B
+    Input["Coder Workspace Configs, GitHub Repos, OpenAI API, Stack Overflow API"] --> A1
+    C -->|Preload Commonly Used Files| B
+    D -->|Avoid Unnecessary Test Runs| B
+    E -->|Spot Security Risks in Code| B
+
 
 ```
 
