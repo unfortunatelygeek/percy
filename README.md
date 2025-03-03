@@ -38,6 +38,8 @@ In summary:
 - Pax is the integration of both thse models into the collaborative, cloud-based IDE synergy of Coder and OnixIDE
 - Marksman's purpose is to mitigate the costs incurred due to cloud based development solutions. It does this by predicting usage patterns and caching resources efficiently to reduce latency and unnecessary cloud costs.
 
+Reviewers please note: **Ony Prowler and Marksman are functional and have been tested. Perceptor's SVM Model failed to provide desired results, which resulted in a pivot to an XGBoost instead. Perceptor is, therefore, still under development. Pax, the ecosystem, is an integration in Go, and requires the other three systems to be end-to-end functional.**
+
 ## Components
 
 ### 1. Prowler: AI for Testing
