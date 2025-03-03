@@ -4,6 +4,12 @@ Percy is a four-pronged AI-driven solution optimizing CI/CD pipelines, automatin
 
 ## High-Level Design of Percy
 
+### Components:
+
+![image](https://github.com/user-attachments/assets/68342fe3-92f3-4a31-a675-993afd856011)
+
+### Workflow
+
 ```mermaid
 graph TD;
     subgraph Pax: Developer Hub
@@ -24,6 +30,13 @@ graph TD;
     Developer -->|Runs Tests With the help of| D
     Developer -->|Checks for Bugs with the help of| E
 ```
+
+In summary:
+
+- Perceptor exists to reduce workload in the CI/CD pipeline by automating tedious tasks like testing and documentation. Perceptor aims to reduce testing burden on the company's resources by choosing which tests to run rather than running all of them.
+- Prowler essentially 'prowls' the codebase for security vulnerabilities. It scans the codebase for security vulnerabilities and flags potential risks using AI models and pattern detection.
+- Pax is the integration of both thse models into the collaborative, cloud-based IDE synergy of Coder and OnixIDE
+- Marksman's purpose is to mitigate the costs incurred due to cloud based development solutions. It does this by predicting usage patterns and caching resources efficiently to reduce latency and unnecessary cloud costs.
 
 ## Components
 
