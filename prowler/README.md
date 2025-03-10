@@ -81,8 +81,8 @@ poetry run python main.py
 
 Upcoming features include:
 
-- Tree-Sitter Integration for multi-language support.
-- AST-Based Analysis to improve structured vulnerability detection.
+- Tree-Sitter Integration for multi-language support. ✔️
+- AST-Based Analysis to improve structured vulnerability detection. ✔️
 - Zero-Day Vulnerability Detection Enhancements for better anomaly detection.
 - Automated Unit Test Generation to prevent security regressions.
 

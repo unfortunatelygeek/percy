@@ -40,7 +40,7 @@ class RepoAnalyzer:
                     log.debug("Network-related file detected", file=str(file))
                     yield file
             except Exception as e:
-                log.error("Error processing file", file=str(file), error=str(e))
+                # log.error("Error processing file", file=str(file), error=str(e))
                 continue
 
 class JSRepoAnalyzer:
@@ -79,7 +79,7 @@ class JSRepoAnalyzer:
                 log.warning("Skipping non-text file", file=str(file))
                 continue
             except Exception as e:
-                log.error("Error processing file", file=str(file), error=str(e))
+                # log.error("Error processing file", file=str(file), error=str(e))
                 continue
 
     def _is_valid_file(self, file: Path) -> bool:

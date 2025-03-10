@@ -199,8 +199,7 @@ class SymbolExtractor:
             return self._search_tree_for_symbol(symbol_name, tree, content, str(file))
             
         except Exception as e:
-            print(f"Error processing {file}: {e}")
-            
+            print(f"Processing {file}: {e}")            
         return None
     
     def _search_tree_for_symbol(self, symbol_name: str, tree, content: str, file_path: str) -> Optional[Dict[str, Any]]:
