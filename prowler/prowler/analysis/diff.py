@@ -8,8 +8,8 @@ class GitDiffAnalyzer:
         self.repo_path = Path(repo_path).resolve()
         log.info("GitDiffAnalyzer initialized", repo_path=str(self.repo_path))
 
+    # Fetches the list of modified files from the latest Git diff
     def get_changed_files(self) -> List[Path]:
-        """Fetches the list of modified files from the latest Git diff."""
         try:
             result = subprocess.run(
                 ["git", "diff", "--name-only", "HEAD"],
@@ -24,9 +24,9 @@ class GitDiffAnalyzer:
         except subprocess.CalledProcessError as e:
             log.error("Error fetching Git diff", error=str(e))
             return []
-
+        
+    # Analyzes only the files changed in the latest commit.
     def analyze_git_diff(self) -> dict:
-        """Analyzes only the files changed in the latest commit."""
         changed_files = self.get_changed_files()
         js_ts_files = [f for f in changed_files if f.suffix in {".js", ".ts", ".tsx", ".jsx", ".mjs"}]
 

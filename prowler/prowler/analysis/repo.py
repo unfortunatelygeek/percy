@@ -46,7 +46,9 @@ class RepoAnalyzer:
 class JSRepoAnalyzer:
     def __init__(self, repo_path: Path | str) -> None:
         self.repo_path = Path(repo_path).resolve()
-        self.to_exclude = {'/node_modules', '/test', '/example', '/docs', '/dist', '/coverage', '/build'}
+        self.to_exclude = {
+            "/node_modules", "/test", "/example", "/docs", "/dist", "/coverage", "/build", "/.next", "/out", "/.turbo"
+        }
         self.file_names_to_exclude = {'.spec.js', '.spec.ts', '.test.js', '.test.ts'}
 
         self.network_patterns = [
