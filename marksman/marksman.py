@@ -322,7 +322,7 @@ class AnomalyDetector:
             time_diff = (now - ts).total_seconds() / 3600  # Hours difference
             weight = self.decay_factor ** time_diff
             values.append(val)
-            weights.append(weights)
+            weights.append(weight)
         
         # Calculate mean and standard deviation
         weighted_mean = np.average(values, weights=weights)
@@ -360,7 +360,7 @@ class MonitoringSystem:
     
     def __init__(self, grafana_url: str = 'http://localhost:3000', 
                  prometheus_url: str = 'http://localhost:9090', 
-                 auth: Tuple[str, str] = ('admin', 'admin')):
+                 auth: Tuple[str, str] = ('admin', 'unfortunatelygeek')):
         """
         Initialize the monitoring system.        
         args:
@@ -929,12 +929,15 @@ class MarksmanSystem:
             'predicted_next_actions': predicted_states,
             'current_state': self.markov_model.last_state,
             'resource_predictions': {}
-        }        
+        } 
+        log.info(f"Predicted Next Actions: {result['predicted_next_actions']}")
+
         # Predict resources for each predicted state
         for i, state in enumerate(predicted_states):
             state_id = self.markov_model.state_mapping.get(json.dumps(state, sort_keys=True))
             if state_id is not None:
-                result['resource_predictions'][f'state_{i}'] = self.resource_predictor.predict_resources(state_id)        
+                result['resource_predictions'][f'state_{i}'] = self.resource_predictor.predict_resources(state_id)
+                log.info(f"Predicted Next Actions: {result['resource_predictions'][f'state_{i}']}")        
         # Update monitoring
         if self.monitoring:
             self.monitoring.set_prediction_accuracy(self.cache_manager.get_prediction_accuracy())

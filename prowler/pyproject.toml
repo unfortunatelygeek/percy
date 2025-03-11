@@ -18,6 +18,8 @@ dependencies = [
     "tree-sitter-language-pack (>=0.6.0,<0.7.0)",
     "networkx (>=3.4.2,<4.0.0)",
     "matplotlib (>=3.10.1,<4.0.0)",
+    "markdown-pdf (>=1.4,<2.0)",
+    "markdown (>=3.7,<4.0)",
 ]
 
 

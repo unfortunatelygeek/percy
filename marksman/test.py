@@ -8,8 +8,6 @@ import json
 import os
 import datetime
 
-# Import your Marksman system
-# Assuming the code is in a file called marksman.py
 from marksman import MarksmanSystem
 
 class MarksmanTester:
